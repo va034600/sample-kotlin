@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 class HelloWorldJsonController {
-    @RequestMapping(value="/hello-world-json", method=[RequestMethod.GET], produces=[MediaType.APPLICATION_JSON_VALUE])
+    @RequestMapping(value=["/hello-world-json"], method=[RequestMethod.GET], produces=[MediaType.APPLICATION_JSON_VALUE])
     fun hello():SampleBean{
         val bean = SampleBean(123,"aaa");
         return bean;
