@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController
 class HelloWorldController(
         val sampleService: SampleService
 ) {
-    @RequestMapping(value = ["/hello-world"], method = [RequestMethod.GET])
+    @RequestMapping(value = ["/hello-world-service"], method = [RequestMethod.GET])
     fun hello(): String {
         return sampleService.getMessage();
     }
