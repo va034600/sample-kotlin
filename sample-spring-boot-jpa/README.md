@@ -15,5 +15,5 @@ insert into sample
 (message, updated)
 VALUES
 ('aaa', now()),
-(null, now())
+(null, now());
 ```
