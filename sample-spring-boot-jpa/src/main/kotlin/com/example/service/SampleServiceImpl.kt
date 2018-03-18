@@ -1,5 +1,6 @@
 package com.example.service
 
+import com.example.entity.SampleEntity
 import com.example.repository.SampleRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -19,5 +20,12 @@ class SampleServiceImpl(
         return sampleEntity?.let {
             it.get().message ?: "empty column"
         }
+    }
+
+    @Transactional(timeout = 10)
+    override fun save(message: String): Int {
+        val sampleEntity = SampleEntity(message = message)
+        val sampleEntity2 = sampleRepository.save(sampleEntity)
+        return sampleEntity2.id
     }
 }
