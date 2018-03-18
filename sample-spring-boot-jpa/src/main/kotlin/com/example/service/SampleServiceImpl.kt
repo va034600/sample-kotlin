@@ -9,11 +9,15 @@ class SampleServiceImpl(
         val sampleRepository: SampleRepository
 ) : SampleService {
     @Transactional(readOnly = true)
-    override fun getMessage(id: Int): String {
+    override fun getMessage(id: Int): String? {
         val sampleEntity = sampleRepository.findById(id)
 
-        return sampleEntity.map {
-            it.message ?: "empty column"
-        }.orElseGet { "not found!!" }
+        if(!sampleEntity.isPresent){
+            return null
+        }
+
+        return sampleEntity?.let {
+            it.get().message ?: "empty column"
+        }
     }
 }
