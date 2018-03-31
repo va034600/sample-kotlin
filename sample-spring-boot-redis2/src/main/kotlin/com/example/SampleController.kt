@@ -6,16 +6,16 @@ import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-class HelloWorldController(
+class SampleController(
         val sampleService: SampleService
 ) {
-    @RequestMapping(value = ["/hello-world-redis"], method = [RequestMethod.GET])
-    fun helloWorldReids(): SampleDto? {
+    @RequestMapping(value = ["/sample-redis"], method = [RequestMethod.GET])
+    fun sampleReids(): SampleDto? {
         return sampleService.getSampleDto();
     }
 
-    @RequestMapping(value = ["/hello-world-redis2"], method = [RequestMethod.GET])
-    fun helloWorldReids2(): SampleDto? {
+    @RequestMapping(value = ["/sample-redis2"], method = [RequestMethod.GET])
+    fun sampleReids2(): SampleDto? {
         return sampleService.getSampleDto2();
     }
 }
