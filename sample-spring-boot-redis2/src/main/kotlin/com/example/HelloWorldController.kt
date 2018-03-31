@@ -9,8 +9,13 @@ import org.springframework.web.bind.annotation.RestController
 class HelloWorldController(
         val sampleService: SampleService
 ) {
-    @RequestMapping(value = ["/hello-world-service"], method = [RequestMethod.GET])
-    fun hello(): SampleDto? {
-        return sampleService.getTestDto();
+    @RequestMapping(value = ["/hello-world-redis"], method = [RequestMethod.GET])
+    fun helloWorldReids(): SampleDto? {
+        return sampleService.getSampleDto();
+    }
+
+    @RequestMapping(value = ["/hello-world-redis2"], method = [RequestMethod.GET])
+    fun helloWorldReids2(): SampleDto? {
+        return sampleService.getSampleDto2();
     }
 }
