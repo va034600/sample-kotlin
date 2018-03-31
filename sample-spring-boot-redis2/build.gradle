@@ -52,7 +52,7 @@ dependencies {
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 
 	compile('org.springframework.boot:spring-boot-starter-data-redis')
-	compile('com.fasterxml.jackson.module:jackson-module-kotlin')
-	compile('org.apache.commons:commons-pool2')
-	compile('redis.clients:jedis')
+	compile("com.fasterxml.jackson.module:jackson-module-kotlin:2.9.4")
+	compile("org.apache.commons:commons-pool2:2.5.0")
+	compile("redis.clients:jedis:2.9.0")
 }
