@@ -17,11 +17,13 @@ class SampleServiceImpl(
 
     override fun getSampleDto2():SampleDto? {
         val sampleDto = SampleDto(1, "aac")
-        val om = jacksonObjectMapper()
-        var jsonStr = om.writeValueAsString(sampleDto)
 
-        redisTemplate2.opsForValue().set("test_dto3", jsonStr)
-        val jsonStr2 = redisTemplate2.opsForValue().get("test_dto3")
+        val om = jacksonObjectMapper()
+
+        var jsonStr = om.writeValueAsString(sampleDto)
+        redisTemplate2.opsForValue().set("test_dto2", jsonStr)
+
+        val jsonStr2 = redisTemplate2.opsForValue().get("test_dto2")
         return om.readValue(jsonStr2 ?: "{}", SampleDto::class.java)
     }
 }
