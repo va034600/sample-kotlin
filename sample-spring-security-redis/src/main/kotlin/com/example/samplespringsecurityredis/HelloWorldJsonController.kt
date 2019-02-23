@@ -13,6 +13,6 @@ class HelloWorldJsonController {
 
     @GetMapping(value=["prv/test"])
     fun prv(@AuthenticationPrincipal loginUser: SimpleLoginUser): String {
-        return loginUser.username
+        return "username:${loginUser.username}"
     }
 }
