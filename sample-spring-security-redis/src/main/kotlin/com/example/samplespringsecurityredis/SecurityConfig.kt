@@ -3,6 +3,7 @@ package com.example.samplespringsecurityredis
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.context.annotation.Bean
+import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
@@ -13,6 +14,8 @@ import org.springframework.security.core.AuthenticationException
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
+import org.springframework.security.web.AuthenticationEntryPoint
+import org.springframework.security.web.access.AccessDeniedHandler
 import org.springframework.security.web.authentication.AuthenticationFailureHandler
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler
 import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler
@@ -39,6 +42,12 @@ class SecurityConfig : WebSecurityConfigurerAdapter() {
                 .authenticated()
 
         http.csrf().disable()  //CSRFを無効
+
+        // EXCEPTION
+        http
+                .exceptionHandling()
+                .authenticationEntryPoint(authenticationEntryPoint())
+                .accessDeniedHandler(accessDeniedHandler())
 
         // LOGIN
         http
@@ -76,6 +85,14 @@ class SecurityConfig : WebSecurityConfigurerAdapter() {
         return BCryptPasswordEncoder()
     }
 
+    fun authenticationEntryPoint(): AuthenticationEntryPoint {
+        return SimpleAuthenticationEntryPoint()
+    }
+
+    fun accessDeniedHandler(): AccessDeniedHandler {
+        return SimpleAccessDeniedHandler()
+    }
+
     fun authenticationSuccessHandler(): AuthenticationSuccessHandler {
         return SimpleAuthenticationSuccessHandler()
     }
@@ -86,6 +103,27 @@ class SecurityConfig : WebSecurityConfigurerAdapter() {
 
     fun logoutSuccessHandler(): LogoutSuccessHandler {
         return HttpStatusReturningLogoutSuccessHandler()
+    }
+}
+
+internal class SimpleAuthenticationEntryPoint : AuthenticationEntryPoint {
+
+    @Throws(IOException::class, ServletException::class)
+    override fun commence(request: HttpServletRequest,
+                          response: HttpServletResponse,
+                          exception: AuthenticationException) {
+        if (response.isCommitted) {
+            return
+        }
+        response.sendError(HttpStatus.UNAUTHORIZED.value(), HttpStatus.UNAUTHORIZED.reasonPhrase)
+    }
+}
+
+internal class SimpleAccessDeniedHandler : AccessDeniedHandler {
+    @Throws(IOException::class, ServletException::class)
+    override fun handle(request: HttpServletRequest?, response: HttpServletResponse?,
+                        accessDeniedException: org.springframework.security.access.AccessDeniedException?) {
+        response!!.sendError(HttpStatus.FORBIDDEN.value(), HttpStatus.FORBIDDEN.reasonPhrase)
     }
 }
 
